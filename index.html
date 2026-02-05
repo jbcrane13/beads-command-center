@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beads Command Center</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0d1117;
+            color: #f0f6fc;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #58a6ff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .refresh-btn {
+            background: #238636;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .refresh-btn:hover {
+            background: #2ea043;
+        }
+
+        .refresh-btn:disabled {
+            background: #6e7681;
+            cursor: not-allowed;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #58a6ff;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 8px;
+            background: #21262d;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #238636, #2ea043);
+            transition: width 0.3s ease;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            color: #f0f6fc;
+            padding: 0.5rem;
+            border-radius: 6px;
+            width: 300px;
+            font-size: 0.875rem;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #58a6ff;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-select {
+            background: #21262d;
+            border: 1px solid #30363d;
+            color: #f0f6fc;
+            padding: 0.4rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            border-bottom: 1px solid #30363d;
+            margin-top: 1rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1rem;
+            background: none;
+            border: none;
+            color: #7d8590;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .tab.active {
+            color: #58a6ff;
+            border-bottom-color: #58a6ff;
+        }
+
+        .tab:hover {
+            color: #f0f6fc;
+        }
+
+        .main-content {
+            padding: 1rem;
+            min-height: calc(100vh - 200px);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .view-btn {
+            background: #21262d;
+            border: 1px solid #30363d;
+            color: #f0f6fc;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .view-btn.active {
+            background: #58a6ff;
+            border-color: #58a6ff;
+            color: #0d1117;
+        }
+
+        .kanban {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .column {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .column-header {
+            background: #21262d;
+            padding: 1rem;
+            border-bottom: 1px solid #30363d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .column-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .column-count {
+            background: #6e7681;
+            color: #f0f6fc;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .column-body {
+            padding: 1rem;
+            min-height: 200px;
+        }
+
+        .issue-card {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .issue-card:hover {
+            border-color: #58a6ff;
+            transform: translateY(-1px);
+        }
+
+        .issue-card.blocked {
+            border-left: 3px solid #f85149;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .issue-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+            line-height: 1.4;
+        }
+
+        .issue-id {
+            font-size: 0.75rem;
+            color: #7d8590;
+            font-family: 'SF Mono', Consolas, monospace;
+        }
+
+        .priority {
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .priority.p0 { background: #f85149; color: white; }
+        .priority.p1 { background: #ff7b72; color: white; }
+        .priority.p2 { background: #ffa657; color: #0d1117; }
+        .priority.p3 { background: #7d8590; color: white; }
+
+        .card-meta {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .type-badge {
+            background: #1f6feb;
+            color: white;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .type-badge.bug { background: #f85149; }
+        .type-badge.feature { background: #2ea043; }
+        .type-badge.epic { background: #a5a5a5; }
+        .type-badge.task { background: #1f6feb; }
+
+        .assignee {
+            font-size: 0.75rem;
+            color: #7d8590;
+        }
+
+        .dependency-indicator {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 8px;
+            height: 8px;
+            background: #58a6ff;
+            border-radius: 50%;
+            display: none;
+        }
+
+        .issue-card.has-dependencies .dependency-indicator {
+            display: block;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 1rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #7d8590;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            color: #f0f6fc;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .issue-description {
+            margin: 1rem 0;
+            line-height: 1.6;
+            color: #c9d1d9;
+        }
+
+        .dependencies-section, .audit-section {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #30363d;
+        }
+
+        .section-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #58a6ff;
+        }
+
+        .dependency-list {
+            list-style: none;
+        }
+
+        .dependency-item {
+            padding: 0.5rem;
+            background: #21262d;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .audit-entry {
+            padding: 0.75rem;
+            background: #21262d;
+            border-left: 3px solid #58a6ff;
+            margin-bottom: 0.75rem;
+        }
+
+        .audit-meta {
+            font-size: 0.75rem;
+            color: #7d8590;
+            margin-bottom: 0.25rem;
+        }
+
+        .ready-queue {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1rem;
+        }
+
+        .ready-queue.active {
+            display: grid;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            font-size: 1.125rem;
+            color: #7d8590;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #7d8590;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 0.5rem;
+            color: #f0f6fc;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 0.75rem;
+            }
+
+            .stats-bar {
+                gap: 1rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.75rem;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .kanban {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+                max-height: 90vh;
+            }
+
+            .view-toggle {
+                flex-wrap: wrap;
+            }
+        }
+
+        .error-message {
+            background: #f85149;
+            color: white;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-top">
+            <h1 class="logo">
+                🔮 Beads Command Center
+            </h1>
+            <button class="refresh-btn" onclick="refreshData()">
+                🔄 Refresh Data
+            </button>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat">
+                <span>Total:</span>
+                <span class="stat-value" id="total-count">0</span>
+            </div>
+            <div class="stat">
+                <span>Open:</span>
+                <span class="stat-value" id="open-count">0</span>
+            </div>
+            <div class="stat">
+                <span>In Progress:</span>
+                <span class="stat-value" id="progress-count">0</span>
+            </div>
+            <div class="stat">
+                <span>Closed:</span>
+                <span class="stat-value" id="closed-count">0</span>
+            </div>
+            <div class="stat">
+                <span>Completion:</span>
+                <span class="stat-value" id="completion-pct">0%</span>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <input type="text" class="search-box" placeholder="Search issues..." onInput="filterIssues()">
+            
+            <div class="filter-group">
+                <select class="filter-select" id="status-filter" onChange="filterIssues()">
+                    <option value="">All Status</option>
+                    <option value="open">Open</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="blocked">Blocked</option>
+                    <option value="closed">Closed</option>
+                </select>
+                
+                <select class="filter-select" id="priority-filter" onChange="filterIssues()">
+                    <option value="">All Priority</option>
+                    <option value="p0">P0</option>
+                    <option value="p1">P1</option>
+                    <option value="p2">P2</option>
+                    <option value="p3">P3</option>
+                </select>
+                
+                <select class="filter-select" id="type-filter" onChange="filterIssues()">
+                    <option value="">All Types</option>
+                    <option value="task">Task</option>
+                    <option value="bug">Bug</option>
+                    <option value="feature">Feature</option>
+                    <option value="epic">Epic</option>
+                </select>
+                
+                <select class="filter-select" id="assignee-filter" onChange="filterIssues()">
+                    <option value="">All Assignees</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="tabs" id="project-tabs">
+            <!-- Populated dynamically -->
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="view-toggle">
+            <button class="view-btn active" onclick="switchView('kanban')">📋 Kanban</button>
+            <button class="view-btn" onclick="switchView('ready')">⚡ Ready Queue</button>
+        </div>
+
+        <div id="kanban-view" class="kanban">
+            <div class="column">
+                <div class="column-header">
+                    <span class="column-title">📋 Open</span>
+                    <span class="column-count" id="open-column-count">0</span>
+                </div>
+                <div class="column-body" id="open-column">
+                    <!-- Issues populated dynamically -->
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="column-header">
+                    <span class="column-title">🚀 In Progress</span>
+                    <span class="column-count" id="progress-column-count">0</span>
+                </div>
+                <div class="column-body" id="progress-column">
+                    <!-- Issues populated dynamically -->
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="column-header">
+                    <span class="column-title">🚫 Blocked</span>
+                    <span class="column-count" id="blocked-column-count">0</span>
+                </div>
+                <div class="column-body" id="blocked-column">
+                    <!-- Issues populated dynamically -->
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="column-header">
+                    <span class="column-title">✅ Closed</span>
+                    <span class="column-count" id="closed-column-count">0</span>
+                </div>
+                <div class="column-body" id="closed-column">
+                    <!-- Issues populated dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <div id="ready-view" class="ready-queue">
+            <!-- Ready issues populated dynamically -->
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            Loading beads data...
+        </div>
+    </main>
+
+    <!-- Issue Detail Modal -->
+    <div id="issue-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title" id="modal-title"></h2>
+                    <div id="modal-meta"></div>
+                </div>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <div id="modal-body">
+                <div class="issue-description" id="modal-description"></div>
+                
+                <div class="dependencies-section" id="dependencies-section" style="display: none;">
+                    <h3 class="section-title">🔗 Dependencies</h3>
+                    <ul class="dependency-list" id="dependency-list"></ul>
+                </div>
+                
+                <div class="audit-section" id="audit-section">
+                    <h3 class="section-title">📝 Audit Trail</h3>
+                    <div id="audit-trail"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let allIssues = [];
+        let filteredIssues = [];
+        let currentProject = 'all';
+        let currentView = 'kanban';
+        let projects = {};
+
+        // Initialize the dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+        });
+
+        // Load data from JSON files
+        async function loadData() {
+            showLoading(true);
+            
+            try {
+                // Load both project files
+                const [netmonitor, netmonitorIOS] = await Promise.all([
+                    fetch('data/netmonitor.json').then(r => r.ok ? r.json() : { issues: [] }),
+                    fetch('data/netmonitor-ios.json').then(r => r.ok ? r.json() : { issues: [] })
+                ]);
+
+                // Process and combine data
+                projects = {
+                    'netmonitor': {
+                        name: 'NetMonitor',
+                        data: netmonitor,
+                        issues: (netmonitor.issues || []).map(issue => ({ ...issue, project: 'netmonitor' }))
+                    },
+                    'netmonitor-ios': {
+                        name: 'NetMonitor iOS',
+                        data: netmonitorIOS,
+                        issues: (netmonitorIOS.issues || []).map(issue => ({ ...issue, project: 'netmonitor-ios' }))
+                    }
+                };
+
+                // Combine all issues
+                allIssues = [
+                    ...projects['netmonitor'].issues,
+                    ...projects['netmonitor-ios'].issues
+                ];
+
+                // Process issues (normalize fields)
+                allIssues = allIssues.map(issue => processIssue(issue));
+
+                // Set up UI
+                setupProjectTabs();
+                populateAssigneeFilter();
+                filterIssues();
+                updateStats();
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showError('Failed to load beads data. Make sure to run refresh.sh first.');
+            }
+            
+            showLoading(false);
+        }
+
+        // Process individual issue data
+        function processIssue(issue) {
+            return {
+                ...issue,
+                id: issue.id || issue.number || Math.random().toString(36).substr(2, 9),
+                title: issue.title || 'Untitled Issue',
+                description: issue.description || issue.body || '',
+                status: normalizeStatus(issue.status || issue.state),
+                priority: normalizePriority(issue.priority),
+                type: normalizeType(issue.type || issue.kind || 'task'),
+                assignee: issue.assignee || issue.assigned_to || 'Unassigned',
+                dependencies: issue.dependencies || issue.blocks || [],
+                audit: issue.audit || issue.history || [],
+                created: issue.created || issue.created_at,
+                updated: issue.updated || issue.updated_at
+            };
+        }
+
+        // Normalize status values
+        function normalizeStatus(status) {
+            if (!status) return 'open';
+            
+            const s = status.toLowerCase().replace(/[_-]/g, ' ');
+            
+            if (s.includes('open') || s.includes('new') || s.includes('todo')) return 'open';
+            if (s.includes('progress') || s.includes('doing') || s.includes('active')) return 'in-progress';
+            if (s.includes('blocked') || s.includes('waiting')) return 'blocked';
+            if (s.includes('closed') || s.includes('done') || s.includes('resolved')) return 'closed';
+            
+            return 'open';
+        }
+
+        // Normalize priority values
+        function normalizePriority(priority) {
+            if (!priority) return 'p3';
+            
+            const p = priority.toString().toLowerCase();
+            
+            if (p.includes('0') || p.includes('critical') || p.includes('urgent')) return 'p0';
+            if (p.includes('1') || p.includes('high')) return 'p1';
+            if (p.includes('2') || p.includes('medium') || p.includes('normal')) return 'p2';
+            if (p.includes('3') || p.includes('low')) return 'p3';
+            
+            return 'p3';
+        }
+
+        // Normalize type values
+        function normalizeType(type) {
+            if (!type) return 'task';
+            
+            const t = type.toLowerCase();
+            
+            if (t.includes('bug') || t.includes('defect')) return 'bug';
+            if (t.includes('feature') || t.includes('enhancement')) return 'feature';
+            if (t.includes('epic') || t.includes('milestone')) return 'epic';
+            
+            return 'task';
+        }
+
+        // Set up project tabs
+        function setupProjectTabs() {
+            const tabsContainer = document.getElementById('project-tabs');
+            
+            // All projects tab
+            tabsContainer.innerHTML = `
+                <button class="tab active" onclick="switchProject('all')">All Projects</button>
+            `;
+            
+            // Individual project tabs
+            for (const [key, project] of Object.entries(projects)) {
+                const tab = document.createElement('button');
+                tab.className = 'tab';
+                tab.textContent = project.name;
+                tab.onclick = () => switchProject(key);
+                tabsContainer.appendChild(tab);
+            }
+        }
+
+        // Switch between projects
+        function switchProject(projectKey) {
+            currentProject = projectKey;
+            
+            // Update active tab
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            filterIssues();
+            updateStats();
+        }
+
+        // Switch between views
+        function switchView(view) {
+            currentView = view;
+            
+            // Update active button
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Show/hide views
+            document.getElementById('kanban-view').style.display = view === 'kanban' ? 'grid' : 'none';
+            document.getElementById('ready-view').classList.toggle('active', view === 'ready');
+            
+            // Render appropriate view
+            if (view === 'kanban') {
+                renderKanban();
+            } else {
+                renderReadyQueue();
+            }
+        }
+
+        // Populate assignee filter
+        function populateAssigneeFilter() {
+            const assigneeFilter = document.getElementById('assignee-filter');
+            const assignees = [...new Set(allIssues.map(issue => issue.assignee).filter(a => a !== 'Unassigned'))];
+            
+            assignees.forEach(assignee => {
+                const option = document.createElement('option');
+                option.value = assignee;
+                option.textContent = assignee;
+                assigneeFilter.appendChild(option);
+            });
+        }
+
+        // Filter issues based on current filters
+        function filterIssues() {
+            let issues = [...allIssues];
+            
+            // Filter by project
+            if (currentProject !== 'all') {
+                issues = issues.filter(issue => issue.project === currentProject);
+            }
+            
+            // Filter by search term
+            const searchTerm = document.querySelector('.search-box').value.toLowerCase();
+            if (searchTerm) {
+                issues = issues.filter(issue => 
+                    issue.title.toLowerCase().includes(searchTerm) ||
+                    issue.description.toLowerCase().includes(searchTerm) ||
+                    issue.id.toString().includes(searchTerm)
+                );
+            }
+            
+            // Filter by status
+            const statusFilter = document.getElementById('status-filter').value;
+            if (statusFilter) {
+                issues = issues.filter(issue => issue.status === statusFilter);
+            }
+            
+            // Filter by priority
+            const priorityFilter = document.getElementById('priority-filter').value;
+            if (priorityFilter) {
+                issues = issues.filter(issue => issue.priority === priorityFilter);
+            }
+            
+            // Filter by type
+            const typeFilter = document.getElementById('type-filter').value;
+            if (typeFilter) {
+                issues = issues.filter(issue => issue.type === typeFilter);
+            }
+            
+            // Filter by assignee
+            const assigneeFilter = document.getElementById('assignee-filter').value;
+            if (assigneeFilter) {
+                issues = issues.filter(issue => issue.assignee === assigneeFilter);
+            }
+            
+            filteredIssues = issues;
+            
+            // Render current view
+            if (currentView === 'kanban') {
+                renderKanban();
+            } else {
+                renderReadyQueue();
+            }
+        }
+
+        // Render Kanban board
+        function renderKanban() {
+            const columns = {
+                'open': document.getElementById('open-column'),
+                'in-progress': document.getElementById('progress-column'),
+                'blocked': document.getElementById('blocked-column'),
+                'closed': document.getElementById('closed-column')
+            };
+            
+            // Clear columns
+            Object.values(columns).forEach(column => column.innerHTML = '');
+            
+            // Group issues by status
+            const issuesByStatus = {
+                'open': [],
+                'in-progress': [],
+                'blocked': [],
+                'closed': []
+            };
+            
+            filteredIssues.forEach(issue => {
+                issuesByStatus[issue.status].push(issue);
+            });
+            
+            // Render issues in columns
+            for (const [status, issues] of Object.entries(issuesByStatus)) {
+                const column = columns[status];
+                
+                if (issues.length === 0) {
+                    column.innerHTML = '<div class="empty-state"><h3>No issues</h3><p>All clear in this column</p></div>';
+                } else {
+                    issues.forEach(issue => {
+                        const card = createIssueCard(issue);
+                        column.appendChild(card);
+                    });
+                }
+                
+                // Update column count
+                const countElement = document.getElementById(`${status === 'in-progress' ? 'progress' : status}-column-count`);
+                if (countElement) {
+                    countElement.textContent = issues.length;
+                }
+            }
+        }
+
+        // Render Ready Queue (issues with no blockers)
+        function renderReadyQueue() {
+            const readyView = document.getElementById('ready-view');
+            const readyIssues = filteredIssues.filter(issue => 
+                issue.status !== 'closed' && 
+                (!issue.dependencies || issue.dependencies.length === 0 || 
+                 issue.dependencies.every(dep => isResolved(dep)))
+            );
+            
+            readyView.innerHTML = '';
+            
+            if (readyIssues.length === 0) {
+                readyView.innerHTML = '<div class="empty-state"><h3>No ready issues</h3><p>All issues have unresolved blockers or are closed</p></div>';
+            } else {
+                readyIssues.forEach(issue => {
+                    const card = createIssueCard(issue);
+                    readyView.appendChild(card);
+                });
+            }
+        }
+
+        // Check if a dependency is resolved
+        function isResolved(dependency) {
+            // Simple check - in a real implementation, you'd resolve the dependency ID
+            return allIssues.find(issue => 
+                (issue.id === dependency || issue.title === dependency) && 
+                issue.status === 'closed'
+            );
+        }
+
+        // Create issue card HTML
+        function createIssueCard(issue) {
+            const card = document.createElement('div');
+            card.className = `issue-card ${issue.status === 'blocked' ? 'blocked' : ''}${issue.dependencies && issue.dependencies.length > 0 ? ' has-dependencies' : ''}`;
+            card.onclick = () => showIssueDetails(issue);
+            
+            card.innerHTML = `
+                <div class="dependency-indicator"></div>
+                <div class="card-header">
+                    <div>
+                        <div class="issue-title">${escapeHtml(issue.title)}</div>
+                        <div class="issue-id">#${issue.id}</div>
+                    </div>
+                    <div class="priority ${issue.priority}">${issue.priority.toUpperCase()}</div>
+                </div>
+                <div class="card-meta">
+                    <span class="type-badge ${issue.type}">${issue.type}</span>
+                    <span class="assignee">${escapeHtml(issue.assignee)}</span>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Show issue details modal
+        function showIssueDetails(issue) {
+            document.getElementById('modal-title').textContent = issue.title;
+            document.getElementById('modal-meta').innerHTML = `
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 0.5rem; flex-wrap: wrap;">
+                    <span class="priority ${issue.priority}">${issue.priority.toUpperCase()}</span>
+                    <span class="type-badge ${issue.type}">${issue.type}</span>
+                    <span style="color: #7d8590;">#${issue.id}</span>
+                    <span style="color: #7d8590;">Assigned: ${escapeHtml(issue.assignee)}</span>
+                </div>
+            `;
+            
+            document.getElementById('modal-description').textContent = issue.description || 'No description provided.';
+            
+            // Dependencies
+            const depSection = document.getElementById('dependencies-section');
+            const depList = document.getElementById('dependency-list');
+            
+            if (issue.dependencies && issue.dependencies.length > 0) {
+                depSection.style.display = 'block';
+                depList.innerHTML = '';
+                issue.dependencies.forEach(dep => {
+                    const li = document.createElement('li');
+                    li.className = 'dependency-item';
+                    li.textContent = dep;
+                    depList.appendChild(li);
+                });
+            } else {
+                depSection.style.display = 'none';
+            }
+            
+            // Audit trail
+            const auditTrail = document.getElementById('audit-trail');
+            if (issue.audit && issue.audit.length > 0) {
+                auditTrail.innerHTML = '';
+                issue.audit.forEach(entry => {
+                    const auditDiv = document.createElement('div');
+                    auditDiv.className = 'audit-entry';
+                    auditDiv.innerHTML = `
+                        <div class="audit-meta">${entry.date || entry.timestamp || 'Unknown date'} - ${entry.user || 'System'}</div>
+                        <div>${escapeHtml(entry.action || entry.message || 'No details')}</div>
+                    `;
+                    auditTrail.appendChild(auditDiv);
+                });
+            } else {
+                auditTrail.innerHTML = '<div class="audit-entry"><div class="audit-meta">No audit trail available</div></div>';
+            }
+            
+            document.getElementById('issue-modal').classList.add('show');
+        }
+
+        // Close issue details modal
+        function closeModal() {
+            document.getElementById('issue-modal').classList.remove('show');
+        }
+
+        // Update statistics
+        function updateStats() {
+            const issues = currentProject === 'all' ? allIssues : allIssues.filter(i => i.project === currentProject);
+            
+            const total = issues.length;
+            const open = issues.filter(i => i.status === 'open').length;
+            const inProgress = issues.filter(i => i.status === 'in-progress').length;
+            const closed = issues.filter(i => i.status === 'closed').length;
+            const completion = total > 0 ? Math.round((closed / total) * 100) : 0;
+            
+            document.getElementById('total-count').textContent = total;
+            document.getElementById('open-count').textContent = open;
+            document.getElementById('progress-count').textContent = inProgress;
+            document.getElementById('closed-count').textContent = closed;
+            document.getElementById('completion-pct').textContent = completion + '%';
+            document.getElementById('progress-fill').style.width = completion + '%';
+        }
+
+        // Refresh data
+        async function refreshData() {
+            const btn = document.querySelector('.refresh-btn');
+            btn.disabled = true;
+            btn.textContent = '🔄 Refreshing...';
+            
+            await loadData();
+            
+            btn.disabled = false;
+            btn.textContent = '🔄 Refresh Data';
+        }
+
+        // Utility functions
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'flex' : 'none';
+        }
+
+        function showError(message) {
+            const main = document.querySelector('.main-content');
+            main.innerHTML = `<div class="error-message">${message}</div>`;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Close modal on outside click
+        document.getElementById('issue-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
