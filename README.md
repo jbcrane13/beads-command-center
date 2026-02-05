@@ -1,6 +1,22 @@
-# Beads Command Center Dashboard
+# Beads Command Center
 
-A modern, single-page web application that provides a visual command center for beads issue tracking across multiple projects.
+A modern visual command center for beads issue tracking across multiple projects.
+
+## 🎯 Project Vision
+
+**Phase 1: Web Dashboard** *(Current)*  
+Starting as a single-page web application that provides an immediate visual command center for beads projects. Built with vanilla HTML/CSS/JS for simplicity and universal browser compatibility.
+
+**Phase 2: Native SwiftUI App** *(Future)*  
+Evolution into a native SwiftUI application for iOS and macOS, providing:
+- Native performance and system integration
+- Offline-first data synchronization
+- iOS widgets for at-a-glance project status
+- macOS menu bar integration
+- Push notifications for issue updates
+- Deep system integration with Shortcuts, Focus modes, and more
+
+The web dashboard serves as both the MVP and a reference implementation for the native app's feature set and user experience.
 
 ## Features
 
