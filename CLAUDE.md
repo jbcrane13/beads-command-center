@@ -30,13 +30,19 @@ native/BeadsCommandCenter/
     ├── BeadsService.swift            # bd CLI subprocess actor (Process)
     ├── ProjectManager.swift          # @Observable project/issue state manager
     ├── Theme.swift                   # GitHub-dark color palette
-    ├── ContentView.swift             # NavigationSplitView with sidebar + detail
-    ├── KanbanBoardView.swift         # 4-column kanban (open/progress/blocked/closed)
+    ├── ContentView.swift             # 3-panel layout (sidebar, center, right)
+    ├── KanbanBoardView.swift         # 4-column kanban with drag-and-drop
     ├── ReadyQueueView.swift          # Unblocked issues list
-    ├── IssueCardView.swift           # Compact issue card for kanban columns
+    ├── IssueCardView.swift           # Compact draggable issue card
     ├── IssueDetailView.swift         # Full issue detail with quick actions
     ├── CreateIssueView.swift         # New issue form (title, type, priority)
-    └── SetupPromptView.swift         # Setup prompt for uninitialized projects
+    ├── SetupPromptView.swift         # Setup prompt for uninitialized projects
+    ├── OpenClawService.swift         # HTTP + SSE streaming client for gateway
+    ├── ChatViewModel.swift           # Chat message model + streaming state
+    ├── ChatPanelView.swift           # Chat UI with message list + input
+    ├── AgentsViewModel.swift         # Agent session model + supervisor-state reader
+    ├── AgentsPanelView.swift         # Live agent status panel
+    └── StatusBarView.swift           # Bottom bar with aggregate stats
 ```
 
 ### Data Layer
@@ -44,6 +50,8 @@ native/BeadsCommandCenter/
 - Initialized projects have `.beads/` directories
 - Issue data comes from `bd list --status=all --json` (JSON array)
 - Ready queue from `bd ready --json`
+- Chat goes through OpenClaw gateway at `localhost:18789` via `/v1/chat/completions` (SSE streaming)
+- Agent status read from `~/.openclaw/workspace/supervisor-state.json`
 - The app does NOT initialize projects — that's `setup-project.sh`'s job
 - If a project lacks setup, show a prompt to run the setup script
 

@@ -7,76 +7,100 @@ enum DashboardTab: String, CaseIterable {
 
 struct ContentView: View {
     @State private var manager = ProjectManager()
+    @State private var chatVM = ChatViewModel()
+    @State private var agentsVM = AgentsViewModel()
     @State private var selectedTab: DashboardTab = .kanban
     @State private var showingCreateSheet = false
     @State private var showingAddProject = false
+    @State private var showRightPanel = true
+    @State private var rightPanelWidth: CGFloat = 340
 
     var body: some View {
-        NavigationSplitView {
-            sidebar
-                #if os(macOS)
-                .navigationSplitViewColumnWidth(min: 200, ideal: 250)
-                #endif
-        } detail: {
-            detail
+        VStack(spacing: 0) {
+            HStack(spacing: 0) {
+                // Left: Project sidebar
+                sidebar
+                    .frame(width: 200)
+                    .background(Theme.background)
+
+                Divider().background(Theme.cardBorder)
+
+                // Center: Board / Ready content
+                centerPanel
+                    .frame(minWidth: 400)
+
+                if showRightPanel {
+                    Divider().background(Theme.cardBorder)
+
+                    // Right: Chat + Agents (resizable)
+                    rightPanel
+                        .frame(width: rightPanelWidth)
+                        .overlay(alignment: .leading) {
+                            ResizeHandle { delta in
+                                rightPanelWidth = max(280, min(600, rightPanelWidth - delta))
+                            }
+                        }
+                }
+            }
+
+            // Bottom status bar
+            StatusBarView(manager: manager, agentsVM: agentsVM)
         }
         .background(Theme.background)
+        .onChange(of: manager.selectedProject) { _, newProject in
+            chatVM.setProjectContext(newProject?.path)
+        }
     }
 
     // MARK: - Sidebar
 
     @ViewBuilder
     private var sidebar: some View {
-        List(selection: Binding(
-            get: { manager.selectedProject?.id },
-            set: { newId in
-                if let project = manager.projects.first(where: { $0.id == newId }) {
-                    manager.selectProject(project)
-                }
-            }
-        )) {
-            Section("Projects") {
-                ForEach(manager.projects) { project in
-                    HStack {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(project.name)
-                                .font(.headline)
-                                .foregroundStyle(project.isInitialized ? Theme.textPrimary : Theme.textSecondary)
-                            Text(project.path.replacingOccurrences(of: NSHomeDirectory(), with: "~"))
-                                .font(.caption2)
-                                .foregroundStyle(Theme.textSecondary)
-                                .lineLimit(1)
-                        }
-                        Spacer()
-                        if !project.isInitialized {
-                            Image(systemName: "exclamationmark.triangle.fill")
-                                .font(.caption)
-                                .foregroundStyle(.yellow.opacity(0.7))
-                        }
-                    }
-                    .tag(project.id)
-                    .opacity(project.isInitialized ? 1.0 : 0.6)
-                }
-            }
-        }
-        .scrollContentBackground(.hidden)
-        .background(Theme.background)
-        .navigationTitle("Beads")
-        .toolbar {
-            ToolbarItemGroup {
+        VStack(spacing: 0) {
+            HStack {
+                Text("Beads")
+                    .font(.headline.bold())
+                    .foregroundStyle(Theme.textPrimary)
+                Spacer()
                 Button {
                     showingAddProject = true
                 } label: {
                     Image(systemName: "folder.badge.plus")
+                        .font(.caption)
+                        .foregroundStyle(Theme.textSecondary)
                 }
+                .buttonStyle(.plain)
                 .help("Add project path")
 
                 Button {
                     manager.discoverProjects()
                 } label: {
                     Image(systemName: "arrow.clockwise")
+                        .font(.caption)
+                        .foregroundStyle(Theme.textSecondary)
                 }
+                .buttonStyle(.plain)
                 .help("Rescan projects")
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 10)
+            .background(Theme.cardBackground)
+
+            Divider().background(Theme.cardBorder)
+
+            ScrollView {
+                LazyVStack(spacing: 2) {
+                    ForEach(manager.projects) { project in
+                        ProjectRow(
+                            project: project,
+                            isSelected: manager.selectedProject?.id == project.id
+                        )
+                        .onTapGesture {
+                            manager.selectProject(project)
+                        }
+                    }
+                }
+                .padding(6)
             }
         }
         .sheet(isPresented: $showingAddProject) {
@@ -84,10 +108,10 @@ struct ContentView: View {
         }
     }
 
-    // MARK: - Detail
+    // MARK: - Center Panel
 
     @ViewBuilder
-    private var detail: some View {
+    private var centerPanel: some View {
         if let project = manager.selectedProject {
             if project.isInitialized {
                 projectDashboard
@@ -139,6 +163,16 @@ struct ContentView: View {
                 }
                 .help("Refresh issues")
                 .keyboardShortcut("r", modifiers: .command)
+
+                Button {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        showRightPanel.toggle()
+                    }
+                } label: {
+                    Image(systemName: showRightPanel ? "sidebar.right" : "sidebar.right")
+                        .foregroundStyle(showRightPanel ? Theme.accentBlue : Theme.textSecondary)
+                }
+                .help(showRightPanel ? "Hide chat panel" : "Show chat panel")
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
@@ -177,6 +211,80 @@ struct ContentView: View {
         .sheet(isPresented: $showingCreateSheet) {
             CreateIssueView(manager: manager)
         }
+    }
+
+    // MARK: - Right Panel (Chat + Agents)
+
+    @ViewBuilder
+    private var rightPanel: some View {
+        VSplitView {
+            ChatPanelView(chatVM: chatVM, projectPath: manager.selectedProject?.path)
+                .frame(minHeight: 200)
+
+            AgentsPanelView(agentsVM: agentsVM)
+                .frame(minHeight: 120, idealHeight: 200)
+        }
+        .background(Theme.background)
+    }
+}
+
+// MARK: - Project Row
+
+private struct ProjectRow: View {
+    let project: BeadsProject
+    let isSelected: Bool
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(project.name)
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(project.isInitialized ? Theme.textPrimary : Theme.textSecondary)
+                Text(project.path.replacingOccurrences(of: NSHomeDirectory(), with: "~"))
+                    .font(.caption2)
+                    .foregroundStyle(Theme.textSecondary)
+                    .lineLimit(1)
+            }
+            Spacer()
+            if !project.isInitialized {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .font(.caption2)
+                    .foregroundStyle(.yellow.opacity(0.7))
+            }
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(isSelected ? Theme.accentBlue.opacity(0.15) : Color.clear)
+        .clipShape(RoundedRectangle(cornerRadius: 6))
+        .opacity(project.isInitialized ? 1.0 : 0.6)
+    }
+}
+
+// MARK: - Resize Handle
+
+private struct ResizeHandle: View {
+    let onDrag: (CGFloat) -> Void
+
+    var body: some View {
+        Rectangle()
+            .fill(Color.clear)
+            .frame(width: 6)
+            .contentShape(Rectangle())
+            .gesture(
+                DragGesture()
+                    .onChanged { value in
+                        onDrag(value.translation.width)
+                    }
+            )
+            #if os(macOS)
+            .onHover { hovering in
+                if hovering {
+                    NSCursor.resizeLeftRight.push()
+                } else {
+                    NSCursor.pop()
+                }
+            }
+            #endif
     }
 }
 

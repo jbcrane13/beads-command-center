@@ -4,6 +4,7 @@ struct KanbanBoardView: View {
     var manager: ProjectManager
     @State private var selectedIssue: BeadsIssue?
     @State private var showAllClosed = false
+    @State private var dropTargets: [IssueStatus: Bool] = [:]
 
     private let columns: [IssueStatus] = [.open, .inProgress, .blocked, .closed]
     private let closedLimit = 15
@@ -24,6 +25,13 @@ struct KanbanBoardView: View {
         status == .closed && !showAllClosed && totalCount(for: status) > closedLimit
     }
 
+    private func dropBinding(for status: IssueStatus) -> Binding<Bool> {
+        Binding(
+            get: { dropTargets[status] ?? false },
+            set: { dropTargets[status] = $0 }
+        )
+    }
+
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top, spacing: 16) {
@@ -33,9 +41,16 @@ struct KanbanBoardView: View {
                         issues: displayIssues(for: status),
                         totalCount: totalCount(for: status),
                         isLimited: isLimited(for: status),
+                        isDragTarget: dropTargets[status] ?? false,
                         onSelect: { issue in selectedIssue = issue },
-                        onShowAll: { showAllClosed = true }
+                        onShowAll: { showAllClosed = true },
+                        onDrop: { issueId in
+                            handleDrop(issueId: issueId, toStatus: status)
+                        }
                     )
+                    .onDrop(of: [.text], isTargeted: dropBinding(for: status)) { providers in
+                        handleDropProviders(providers, toStatus: status)
+                    }
                 }
             }
             .padding(16)
@@ -45,6 +60,29 @@ struct KanbanBoardView: View {
             IssueDetailView(issue: issue, manager: manager)
         }
     }
+
+    private func handleDrop(issueId: String, toStatus: IssueStatus) {
+        Task {
+            if toStatus == .closed {
+                await manager.closeIssue(issueId: issueId)
+            } else {
+                await manager.updateStatus(issueId: issueId, status: toStatus)
+            }
+        }
+        dropTargets.removeAll()
+    }
+
+    private func handleDropProviders(_ providers: [NSItemProvider], toStatus: IssueStatus) -> Bool {
+        guard let provider = providers.first else { return false }
+        provider.loadItem(forTypeIdentifier: "public.text", options: nil) { data, _ in
+            if let data = data as? Data, let issueId = String(data: data, encoding: .utf8) {
+                Task { @MainActor in
+                    handleDrop(issueId: issueId, toStatus: toStatus)
+                }
+            }
+        }
+        return true
+    }
 }
 
 private struct KanbanColumn: View {
@@ -52,8 +90,10 @@ private struct KanbanColumn: View {
     let issues: [BeadsIssue]
     let totalCount: Int
     var isLimited: Bool = false
+    var isDragTarget: Bool = false
     let onSelect: (BeadsIssue) -> Void
     var onShowAll: (() -> Void)?
+    var onDrop: ((String) -> Void)?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -85,7 +125,7 @@ private struct KanbanColumn: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     LazyVStack(spacing: 8) {
                         ForEach(issues) { issue in
-                            IssueCardView(issue: issue) {
+                            DraggableIssueCard(issue: issue) {
                                 onSelect(issue)
                             }
                         }
@@ -107,7 +147,30 @@ private struct KanbanColumn: View {
         }
         .frame(width: 260)
         .padding(12)
-        .background(Theme.background.opacity(0.5))
+        .background(
+            isDragTarget
+                ? Theme.accentBlue.opacity(0.08)
+                : Theme.background.opacity(0.5)
+        )
         .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(isDragTarget ? Theme.accentBlue.opacity(0.4) : Color.clear, lineWidth: 2)
+        )
+        .animation(.easeInOut(duration: 0.15), value: isDragTarget)
+    }
+}
+
+// MARK: - Draggable Issue Card
+
+private struct DraggableIssueCard: View {
+    let issue: BeadsIssue
+    let onTap: () -> Void
+
+    var body: some View {
+        IssueCardView(issue: issue, onTap: onTap)
+            .onDrag {
+                NSItemProvider(object: issue.id as NSString)
+            }
     }
 }
