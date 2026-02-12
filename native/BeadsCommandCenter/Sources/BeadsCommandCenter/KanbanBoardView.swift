@@ -3,8 +3,26 @@ import SwiftUI
 struct KanbanBoardView: View {
     var manager: ProjectManager
     @State private var selectedIssue: BeadsIssue?
+    @State private var showAllClosed = false
 
     private let columns: [IssueStatus] = [.open, .inProgress, .blocked, .closed]
+    private let closedLimit = 15
+
+    private func displayIssues(for status: IssueStatus) -> [BeadsIssue] {
+        let all = manager.issuesForStatus(status)
+        if status == .closed && !showAllClosed && all.count > closedLimit {
+            return Array(all.prefix(closedLimit))
+        }
+        return all
+    }
+
+    private func totalCount(for status: IssueStatus) -> Int {
+        manager.issuesForStatus(status).count
+    }
+
+    private func isLimited(for status: IssueStatus) -> Bool {
+        status == .closed && !showAllClosed && totalCount(for: status) > closedLimit
+    }
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -12,8 +30,11 @@ struct KanbanBoardView: View {
                 ForEach(columns, id: \.self) { status in
                     KanbanColumn(
                         status: status,
-                        issues: manager.issuesForStatus(status),
-                        onSelect: { issue in selectedIssue = issue }
+                        issues: displayIssues(for: status),
+                        totalCount: totalCount(for: status),
+                        isLimited: isLimited(for: status),
+                        onSelect: { issue in selectedIssue = issue },
+                        onShowAll: { showAllClosed = true }
                     )
                 }
             }
@@ -29,7 +50,10 @@ struct KanbanBoardView: View {
 private struct KanbanColumn: View {
     let status: IssueStatus
     let issues: [BeadsIssue]
+    let totalCount: Int
+    var isLimited: Bool = false
     let onSelect: (BeadsIssue) -> Void
+    var onShowAll: (() -> Void)?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -41,7 +65,7 @@ private struct KanbanColumn: View {
                 Text(status.label)
                     .font(.subheadline.bold())
                     .foregroundStyle(Theme.textPrimary)
-                Text("\(issues.count)")
+                Text("\(totalCount)")
                     .font(.caption.bold())
                     .padding(.horizontal, 6)
                     .padding(.vertical, 2)
@@ -64,6 +88,18 @@ private struct KanbanColumn: View {
                             IssueCardView(issue: issue) {
                                 onSelect(issue)
                             }
+                        }
+                        if isLimited {
+                            Button {
+                                onShowAll?()
+                            } label: {
+                                Text("Show all \(totalCount) closed")
+                                    .font(.caption)
+                                    .foregroundStyle(Theme.accentBlue)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 8)
+                            }
+                            .buttonStyle(.plain)
                         }
                     }
                 }

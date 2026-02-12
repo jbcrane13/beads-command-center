@@ -25,7 +25,8 @@ actor BeadsService {
     private func runBd(args: [String], in directory: String) async throws -> Data {
         let bdPath = findBdPath()
         let process = Process()
-        let pipe = Pipe()
+        let stdoutPipe = Pipe()
+        let stderrPipe = Pipe()
 
         if bdPath == "/usr/bin/env" {
             process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
@@ -35,8 +36,8 @@ actor BeadsService {
             process.arguments = args
         }
         process.currentDirectoryURL = URL(fileURLWithPath: directory)
-        process.standardOutput = pipe
-        process.standardError = FileHandle.nullDevice
+        process.standardOutput = stdoutPipe
+        process.standardError = stderrPipe
 
         // Inherit a reasonable PATH
         var env = ProcessInfo.processInfo.environment
@@ -47,18 +48,28 @@ actor BeadsService {
         env["PATH"] = (extra + [existing]).joined(separator: ":")
         process.environment = env
 
-        try process.run()
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        do {
+            try process.run()
+        } catch {
+            throw BeadsServiceError.bdNotFound
+        }
+
+        let data = stdoutPipe.fileHandleForReading.readDataToEndOfFile()
         process.waitUntilExit()
 
         guard process.terminationStatus == 0 else {
+            let stderrData = stderrPipe.fileHandleForReading.readDataToEndOfFile()
+            let stderrText = String(data: stderrData, encoding: .utf8) ?? ""
+            if !stderrText.isEmpty {
+                throw BeadsServiceError.commandFailedWithMessage(stderrText.trimmingCharacters(in: .whitespacesAndNewlines))
+            }
             throw BeadsServiceError.commandFailed(process.terminationStatus)
         }
         return data
     }
 
-    func listIssues(in projectPath: String) async throws -> [BeadsIssue] {
-        let data = try await runBd(args: ["list", "--json"], in: projectPath)
+    func listIssues(in projectPath: String, status: String = "all") async throws -> [BeadsIssue] {
+        let data = try await runBd(args: ["list", "--status=\(status)", "--json"], in: projectPath)
         // bd list --json outputs JSON array or JSONL depending on version
         // Try JSON array first, fall back to JSONL
         let decoder = JSONDecoder()
@@ -102,11 +113,17 @@ actor BeadsService {
 
 enum BeadsServiceError: Error, LocalizedError {
     case commandFailed(Int32)
+    case commandFailedWithMessage(String)
+    case bdNotFound
 
     var errorDescription: String? {
         switch self {
         case .commandFailed(let code):
             "bd command failed with exit code \(code)"
+        case .commandFailedWithMessage(let msg):
+            "bd: \(msg)"
+        case .bdNotFound:
+            "bd CLI not found. Install beads: pip install beads-cli"
         }
     }
 }

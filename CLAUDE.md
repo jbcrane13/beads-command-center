@@ -24,16 +24,26 @@ swift test
 native/BeadsCommandCenter/
 ├── Package.swift
 └── Sources/BeadsCommandCenter/
-    ├── BeadsCommandCenterApp.swift   # App entry point
-    ├── BeadsIssue.swift              # Issue data model
-    ├── BeadsProject.swift            # Project config model
-    ├── ProjectManager.swift          # Project list management
-    └── ContentView.swift             # Main UI
+    ├── BeadsCommandCenterApp.swift   # App entry point, dark theme, window sizing
+    ├── BeadsIssue.swift              # Issue + status + type models (Codable)
+    ├── BeadsProject.swift            # Project config with .beads/ detection
+    ├── BeadsService.swift            # bd CLI subprocess actor (Process)
+    ├── ProjectManager.swift          # @Observable project/issue state manager
+    ├── Theme.swift                   # GitHub-dark color palette
+    ├── ContentView.swift             # NavigationSplitView with sidebar + detail
+    ├── KanbanBoardView.swift         # 4-column kanban (open/progress/blocked/closed)
+    ├── ReadyQueueView.swift          # Unblocked issues list
+    ├── IssueCardView.swift           # Compact issue card for kanban columns
+    ├── IssueDetailView.swift         # Full issue detail with quick actions
+    ├── CreateIssueView.swift         # New issue form (title, type, priority)
+    └── SetupPromptView.swift         # Setup prompt for uninitialized projects
 ```
 
 ### Data Layer
-- Projects are discovered by scanning for `.beads/` directories
-- Issue data comes from `bd list --json` or `bd export` JSONL files
+- Projects are discovered by scanning `~/Projects` for directories
+- Initialized projects have `.beads/` directories
+- Issue data comes from `bd list --status=all --json` (JSON array)
+- Ready queue from `bd ready --json`
 - The app does NOT initialize projects — that's `setup-project.sh`'s job
 - If a project lacks setup, show a prompt to run the setup script
 

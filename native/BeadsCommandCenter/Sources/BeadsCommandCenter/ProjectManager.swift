@@ -19,6 +19,10 @@ final class ProjectManager {
     init(scanRoot: String = "\(NSHomeDirectory())/Projects") {
         self.scanRoot = scanRoot
         discoverProjects()
+        // Auto-select first initialized project
+        if selectedProject == nil, let first = projects.first(where: { $0.isInitialized }) {
+            selectProject(first)
+        }
     }
 
     func discoverProjects() {
@@ -45,7 +49,13 @@ final class ProjectManager {
             discovered.append(BeadsProject(name: name, path: path))
         }
 
-        projects = discovered
+        // Sort: initialized projects first, then alphabetical
+        projects = discovered.sorted { a, b in
+            if a.isInitialized != b.isInitialized {
+                return a.isInitialized
+            }
+            return a.name.localizedCaseInsensitiveCompare(b.name) == .orderedAscending
+        }
     }
 
     func addManualProject(path: String) {

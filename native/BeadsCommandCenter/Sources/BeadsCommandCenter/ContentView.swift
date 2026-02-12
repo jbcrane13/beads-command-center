@@ -42,7 +42,7 @@ struct ContentView: View {
                             Text(project.name)
                                 .font(.headline)
                                 .foregroundStyle(project.isInitialized ? Theme.textPrimary : Theme.textSecondary)
-                            Text(project.path)
+                            Text(project.path.replacingOccurrences(of: NSHomeDirectory(), with: "~"))
                                 .font(.caption2)
                                 .foregroundStyle(Theme.textSecondary)
                                 .lineLimit(1)
@@ -130,6 +130,7 @@ struct ContentView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(Theme.accentGreen)
+                .keyboardShortcut("n", modifiers: .command)
 
                 Button {
                     Task { await manager.refresh() }
@@ -137,6 +138,7 @@ struct ContentView: View {
                     Image(systemName: "arrow.clockwise")
                 }
                 .help("Refresh issues")
+                .keyboardShortcut("r", modifiers: .command)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 10)

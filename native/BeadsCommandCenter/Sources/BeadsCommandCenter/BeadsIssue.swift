@@ -14,6 +14,12 @@ enum IssueStatus: String, Codable, CaseIterable, Hashable {
         case .closed: "Closed"
         }
     }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let raw = try container.decode(String.self)
+        self = IssueStatus(rawValue: raw) ?? .open
+    }
 }
 
 enum IssueType: String, Codable, CaseIterable, Hashable {
@@ -22,6 +28,9 @@ enum IssueType: String, Codable, CaseIterable, Hashable {
     case feature
     case epic
     case chore
+    case unknown
+
+    static var allCases: [IssueType] { [.task, .bug, .feature, .epic, .chore] }
 
     var label: String { rawValue.capitalized }
 
@@ -32,13 +41,21 @@ enum IssueType: String, Codable, CaseIterable, Hashable {
         case .feature: "star"
         case .epic: "flag"
         case .chore: "wrench"
+        case .unknown: "questionmark.circle"
         }
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let raw = try container.decode(String.self)
+        self = IssueType(rawValue: raw) ?? .unknown
     }
 }
 
 struct BeadsIssue: Identifiable, Codable, Hashable {
     let id: String
     var title: String
+    var description: String?
     var status: IssueStatus
     var priority: Int
     var issueType: IssueType
@@ -48,15 +65,21 @@ struct BeadsIssue: Identifiable, Codable, Hashable {
     var updatedAt: String?
     var closedAt: String?
     var closeReason: String?
+    var dependencyCount: Int?
+    var dependentCount: Int?
+    var commentCount: Int?
 
     enum CodingKeys: String, CodingKey {
-        case id, title, status, priority, owner
+        case id, title, description, status, priority, owner
         case issueType = "issue_type"
         case createdAt = "created_at"
         case createdBy = "created_by"
         case updatedAt = "updated_at"
         case closedAt = "closed_at"
         case closeReason = "close_reason"
+        case dependencyCount = "dependency_count"
+        case dependentCount = "dependent_count"
+        case commentCount = "comment_count"
     }
 
     var priorityLabel: String {
