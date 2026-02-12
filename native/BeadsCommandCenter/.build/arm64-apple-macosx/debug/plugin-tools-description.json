@@ -1,0 +1,491 @@
+{
+  "builtTestProducts" : [
+
+  ],
+  "copyCommands" : {
+
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.BeadsCommandCenter-arm64-apple-macosx26.0-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/sources",
+      "importPath" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/BeadsCommandCenterApp.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/BeadsIssue.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/BeadsProject.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/BeadsService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/ContentView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/CreateIssueView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/IssueCardView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/IssueDetailView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/KanbanBoardView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/ProjectManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/ReadyQueueView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/SetupPromptView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/Theme.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/sources"
+        }
+      ],
+      "isLibrary" : false,
+      "moduleName" : "BeadsCommandCenter",
+      "moduleOutputPath" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/Modules/BeadsCommandCenter.swiftmodule",
+      "objects" : [
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/BeadsCommandCenterApp.swift.o",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/BeadsIssue.swift.o",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/BeadsProject.swift.o",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/BeadsService.swift.o",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/ContentView.swift.o",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/CreateIssueView.swift.o",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/IssueCardView.swift.o",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/IssueDetailView.swift.o",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/KanbanBoardView.swift.o",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/ProjectManager.swift.o",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/ReadyQueueView.swift.o",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/SetupPromptView.swift.o",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/Theme.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx14.0",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j14",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-Xfrontend",
+        "-entry-point-function-name",
+        "-Xfrontend",
+        "BeadsCommandCenter_main",
+        "-swift-version",
+        "5",
+        "-plugin-path",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "beadscommandcenter"
+      ],
+      "outputFileMapPath" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/BeadsCommandCenterApp.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/BeadsIssue.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/BeadsProject.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/BeadsService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/ContentView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/CreateIssueView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/IssueCardView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/IssueDetailView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/KanbanBoardView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/ProjectManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/ReadyQueueView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/SetupPromptView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/Theme.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/Modules/BeadsCommandCenter.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/BeadsCommandCenterApp.swift",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/BeadsIssue.swift",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/BeadsProject.swift",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/BeadsService.swift",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/ContentView.swift",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/CreateIssueView.swift",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/IssueCardView.swift",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/IssueDetailView.swift",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/KanbanBoardView.swift",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/ProjectManager.swift",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/ReadyQueueView.swift",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/SetupPromptView.swift",
+        "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/Theme.swift"
+      ],
+      "tempsPath" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "BeadsCommandCenter" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "BeadsCommandCenter",
+      "-package-name",
+      "beadscommandcenter",
+      "-c",
+      "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/BeadsCommandCenterApp.swift",
+      "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/BeadsIssue.swift",
+      "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/BeadsProject.swift",
+      "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/BeadsService.swift",
+      "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/ContentView.swift",
+      "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/CreateIssueView.swift",
+      "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/IssueCardView.swift",
+      "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/IssueDetailView.swift",
+      "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/KanbanBoardView.swift",
+      "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/ProjectManager.swift",
+      "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/ReadyQueueView.swift",
+      "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/SetupPromptView.swift",
+      "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/Theme.swift",
+      "-I",
+      "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx14.0",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j14",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-Xfrontend",
+      "-entry-point-function-name",
+      "-Xfrontend",
+      "BeadsCommandCenter_main",
+      "-swift-version",
+      "5",
+      "-plugin-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "beadscommandcenter",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "BeadsCommandCenter" : [
+
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+
+  },
+  "traitConfiguration" : {
+    "default" : {
+
+    }
+  },
+  "writeCommands" : {
+    "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter-entitlement.plist" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<entitlement-plist>"
+        },
+        {
+          "kind" : "virtual",
+          "name" : "<com.apple.security.get-task-allow>"
+        }
+      ],
+      "outputFilePath" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter-entitlement.plist"
+    },
+    "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/BeadsCommandCenterApp.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/BeadsIssue.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/BeadsProject.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/BeadsService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/ContentView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/CreateIssueView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/IssueCardView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/IssueDetailView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/KanbanBoardView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/ProjectManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/ReadyQueueView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/SetupPromptView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/Sources/BeadsCommandCenter/Theme.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/sources"
+    },
+    "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/BeadsCommandCenterApp.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/BeadsIssue.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/BeadsProject.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/BeadsService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/ContentView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/CreateIssueView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/IssueCardView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/IssueDetailView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/KanbanBoardView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/ProjectManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/ReadyQueueView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/SetupPromptView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.build/Theme.swift.o"
+        }
+      ],
+      "outputFilePath" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/BeadsCommandCenter.product/Objects.LinkFileList"
+    },
+    "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/Users/blake/Projects/beads-command-center/native/BeadsCommandCenter/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+    }
+  }
+}
